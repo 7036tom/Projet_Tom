@@ -1,12 +1,13 @@
-mkdir raw_magnatagatune_data
-cd raw_magnatagatune_data
-wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.001
-wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.002
-wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.003
+### Uncomment this if the dl link works again ###
+#mkdir raw_magnatagatune_data
+#cd raw_magnatagatune_data
+#wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.001
+#wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.002
+#wget http://mi.soi.city.ac.uk/datasets/magnatagatune/mp3.zip.003
 
-unzip mp3.zip.001
+#unzip mp3.zip.001
 
-wget http://mi.soi.city.ac.uk/datasets/magnatagatune/annotations_final.csv
+#wget http://mi.soi.city.ac.uk/datasets/magnatagatune/annotations_final.csv
 
 cd ../
 
