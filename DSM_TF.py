@@ -37,26 +37,24 @@ X= np.expand_dims(X, axis=2)
 X_F = np.expand_dims(X_F, axis=2)
 
 
-
+# On definit deux modèles : l'un a pour entrée l'entrée du modèle de base et comme sortie la sortie de la premiere couche de ce modèle dans le pipeline 'temporel'. L'autre a comme sortie la sortie de la premiere couche de ce modèle dans le pipeline frequentiel. (cf Model_TF.py)
 Conv1D1 = Model(inputs=model.input, outputs=model.get_layer('conv1d_1').output)
 Conv1D2 = Model(inputs=model.input, outputs=model.get_layer('conv1d_2').output)
 
+# Ici on predit donc les deux representations.
 temp1 = Conv1D1.predict([X, X_F])
 temp2 = Conv1D2.predict([X, X_F])
 
-print(temp1.shape)
-
-print(np.mean(temp1[0], axis=0).shape)
-
-#Conv1D1_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # Mean case
+#Conv1D1_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # nomean case
 Conv1D1_output = np.empty((25, 2*48)) # This will contain the representation outputted by the first layer
 
 for i in range(25):
-	Conv1D1_output[i] = np.concatenate([np.mean(temp1[i], axis=0), np.mean(temp2[i],axis=0)])
+	Conv1D1_output[i] = np.concatenate([np.mean(temp1[i], axis=0), np.mean(temp2[i],axis=0)]) # Enfin on moyenne les valeurs des kernels selon respectivement l'axe temporel et frequentiel des deux representations et on concatene les deux representations ainsi obtenues.
 
 #for i in range(25):
-#	Conv1D1_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # Mean case
+#	Conv1D1_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # nomean case
 
+# On repete l'operation precedente.
 Conv1D3 = Model(inputs=model.input, outputs=model.get_layer('conv1d_3').output)
 Conv1D4 = Model(inputs=model.input, outputs=model.get_layer('conv1d_4').output)
 
@@ -64,13 +62,13 @@ temp1 = Conv1D3.predict([X, X_F])
 temp2 = Conv1D4.predict([X, X_F])
 
 Conv1D2_output = np.empty((25, 2*128))
-#Conv1D2_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # Mean case
+#Conv1D2_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # nomean case
 
 for i in range(25):
 	Conv1D2_output[i] = np.concatenate([np.mean(temp1[i], axis=0), np.mean(temp2[i],axis=0)])
 
 #for i in range(25):
-#	Conv1D2_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # Mean case
+#	Conv1D2_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # nomean case
 
 Conv1D5 = Model(inputs=model.input, outputs=model.get_layer('conv1d_5').output)
 Conv1D6 = Model(inputs=model.input, outputs=model.get_layer('conv1d_6').output)
@@ -79,13 +77,13 @@ temp1 = Conv1D5.predict([X, X_F])
 temp2 = Conv1D6.predict([X, X_F])
 
 Conv1D3_output = np.empty((25, 2*192))
-#Conv1D3_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # Mean case
+#Conv1D3_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # nomean case
 
 for i in range(25):
 	Conv1D3_output[i] =np.concatenate([np.mean(temp1[i], axis=0), np.mean(temp2[i],axis=0)])
 
 #for i in range(25):
-#	Conv1D3_output[i] =np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # Mean case
+#	Conv1D3_output[i] =np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # nomean case
 
 
 Conv1D7 = Model(inputs=model.input, outputs=model.get_layer('conv1d_7').output)
@@ -101,7 +99,7 @@ for i in range(25):
 	Conv1D4_output[i] = np.concatenate([np.mean(temp1[i], axis=0), np.mean(temp2[i],axis=0)])
 
 #for i in range(25):
-#	Conv1D4_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # Mean case
+#	Conv1D4_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # nomean case
 
 Conv1D9 = Model(inputs=model.input, outputs=model.get_layer('conv1d_9').output)
 Conv1D10 = Model(inputs=model.input, outputs=model.get_layer('conv1d_10').output)
@@ -110,13 +108,13 @@ temp1 = Conv1D9.predict([X, X_F])
 temp2 = Conv1D10.predict([X, X_F])
 
 Conv1D5_output = np.empty((25, 2*128))
-#Conv1D5_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # Mean case
+#Conv1D5_output = np.empty((25, 2*len(np.ravel(temp1[0])))) # nomean case
 
 for i in range(25):
 	Conv1D5_output[i] = np.concatenate([np.mean(temp1[i], axis=0), np.mean(temp2[i],axis=0)])
 
 #for i in range(25):
-	#Conv1D5_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # Mean case
+	#Conv1D5_output[i] = np.concatenate([np.ravel(temp1[i]), np.ravel(temp2[i])]) # nomean case
 
 
 Dense1 = Model(inputs=model.input, outputs=model.get_layer('dense_1').output)
