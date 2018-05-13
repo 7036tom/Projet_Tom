@@ -1,0 +1,12 @@
+mkdir raw_studyforest_data
+cd raw_studyforest_data
+wget -r -l1 --no-parent http://psydata.ovgu.de/studyforrest/phase1/stimulus/task002/stimuli/
+cd psydata.ovgu.de/studyforrest/phase1/stimulus/task002/stimuli/
+rm in*
+mv * ../../../../../../
+cd ../../../../../../
+rm -r psydata.ovgu.de
+
+cd ../
+
+python Create_Studyforest_dataset.py

@@ -1,0 +1,4 @@
+mkdir datasets
+
+./Create_studyforest_dataset
+./Create_magnatagatune_dataset
