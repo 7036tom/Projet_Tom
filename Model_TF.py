@@ -19,38 +19,12 @@ from keras import backend as K
 
 from sklearn.metrics import roc_auc_score, roc_curve
 
-
-from keras import initializers
-import tensorflow as tf
-
-
-class ParametricSoftplus(Layer):
-
-	def __init__(self, alpha, beta, **kwargs):
-		self.initalpha = alpha
-		self.initbeta = beta
-		super(ParametricSoftplus, self).__init__(**kwargs)
-
-	def build(self, input_shape):
-		self.alpha = self.add_weight(name='alpha', shape=(1, 1),
-									 initializer=initializers.Constant(value=self.initalpha), trainable=True)
-		self.beta = self.add_weight(name='beta', shape=(1, 1), initializer=initializers.Constant(value=self.initbeta),
-									trainable=True)
-		super(ParametricSoftplus, self).build(input_shape)  # Be sure to call this somewhere!
-
-	def call(self, x):
-		# f(x) = alpha * (1 + exp(beta * x))
-		return self.alpha *K.log (1 + K.exp(self.beta * x))
-
-	def compute_output_shape(self, input_shape):
-		return input_shape
-
 # fix random seed for reproducibility
-seed = 0
+seed = 3
 np.random.seed(seed)
 
 
-
+# Generator definition
 nbr_random = 1500000 # Should be more than a million in real situation
 Random = np.zeros(nbr_random).astype(int) 
 for i in range(nbr_random):
@@ -104,7 +78,7 @@ def Generator():
 	file_size = 88e9
 	X = np.empty((32, 96000))
 	Y = np.empty((32, 50))
-	i = 0
+
 	#100e-9
 	#387E-6
 	
@@ -138,7 +112,6 @@ def Generator():
 				#end = time.time()
 				#print(end - start)
 				nb_elements_in_batch +=1
-				i = i+1
 			if (nb_elements_in_batch == 32): 
 				
 				nb_elements_in_batch = 0
@@ -146,6 +119,29 @@ def Generator():
 					
 generator = Generator()
 
+
+@threadsafe_generator
+def Generator_test():
+	X = np.empty((32, 96000))
+	Y = np.empty((32, 50))
+	#nbr_samples = 464000
+	# 100e-9
+
+	# 387E-6
+
+	nb_line = 0
+	nb_cut = 24
+	while 1:
+		for i in range(nb_cut):
+			X[i]=np.copy(X_test[nb_line, 16000*i:96000+16000*i])
+			Y[i]=np.copy(dataset_labels[int(float(X_test[nb_line, len(X_test[0])-1]))])
+		yield(np.expand_dims(X, axis=2), Y)
+		nb_line+=1
+		if nb_line == 1825:
+			nb_line = 0
+
+
+generator_test = Generator_test()
 
 
 
@@ -162,67 +158,43 @@ ADAM = Adam(lr=0.0002, beta_1=0.5, beta_2=0.999, epsilon=1e-8) # Parameters from
 Input_T = Input(shape = (96000,1))
 Input_F = Input(shape = (96000,1))
 
-output_T_1 = BatchNormalization()(Input_T)
-output_F_1 = BatchNormalization()(Input_F)
+output_T_1 = BatchNormalization(input_shape = (96000,1))(Input_T)
+output_F_1 = BatchNormalization(input_shape = (96000,1))(Input_F)
 
-output_T_2 = Conv1D(filters=48 , kernel_size = 121, strides = 16)(output_T_1)
-output_F_2 = Conv1D(filters=48 , kernel_size = 121, strides = 16)(output_F_1)
+output_T_2 = Conv1D(filters=48 , kernel_size = 121, strides = 16,activation='relu')(output_T_1)
+output_F_2 = Conv1D(filters=48 , kernel_size = 121, strides = 16,activation='relu')(output_F_1)
 
-output_T_2 = ParametricSoftplus(alpha=0.2, beta=5)(output_T_2)
-output_F_2 = ParametricSoftplus(alpha=0.2, beta=5)(output_F_2)
+output_T_3 = MaxPooling1D(pool_size=9, strides=4)(output_T_2)
+output_F_3 = MaxPooling1D(pool_size=9, strides=4)(output_F_2)
 
-output_T_3 = MaxPooling1D(pool_size=9, strides=4, padding='valid')(output_T_2)
-output_F_3 = MaxPooling1D(pool_size=9, strides=4, padding='valid')(output_F_2)
-
-output_T_3 = BatchNormalization()(output_T_3)
-output_F_3 = BatchNormalization()(output_F_3)
-
-
-
-output_T_4 = Conv1D(filters=128, kernel_size = 25)(output_T_3)
-output_F_4 = Conv1D(filters=128, kernel_size = 25)(output_F_3)
-
-output_T_4 = ParametricSoftplus(alpha=0.2, beta=5)(output_T_4)
-output_F_4 = ParametricSoftplus(alpha=0.2, beta=5)(output_F_4)
+output_T_4 = Conv1D(filters=128, kernel_size = 25, activation='relu')(output_T_3)
+output_F_4 = Conv1D(filters=128, kernel_size = 25, activation='relu')(output_F_3)
 
 output_T_5 = MaxPooling1D(pool_size= 9, strides=4, padding='valid')(output_T_4)
 output_F_5 = MaxPooling1D(pool_size= 9, strides=4, padding='valid')(output_F_4)
 
-output_T_6 = Conv1D(filters=192, kernel_size = 9)(output_T_5)
-output_F_6 = Conv1D(filters=192, kernel_size = 9)(output_F_5)
+output_T_6 = Conv1D(filters=192, kernel_size = 9, activation='relu')(output_T_5)
+output_F_6 = Conv1D(filters=192, kernel_size = 9, activation='relu')(output_F_5)
 
-output_T_6 = ParametricSoftplus(alpha=0.2, beta=5)(output_T_6)
-output_F_6 = ParametricSoftplus(alpha=0.2, beta=5)(output_F_6)
+output_T_7 = Conv1D(filters=192, kernel_size = 9, activation='relu')(output_T_6)
+output_F_7 = Conv1D(filters=192, kernel_size = 9, activation='relu')(output_F_6)
 
-output_T_7 = Conv1D(filters=192, kernel_size = 9)(output_T_6)
-output_F_7 = Conv1D(filters=192, kernel_size = 9)(output_F_6)
-
-output_T_7 = ParametricSoftplus(alpha=0.2, beta=5)(output_T_7)
-output_F_7 = ParametricSoftplus(alpha=0.2, beta=5)(output_F_7)
-
-output_T_8 = Conv1D(filters=128, kernel_size = 9)(output_T_7)
-output_F_8 = Conv1D(filters=128, kernel_size = 9)(output_F_7)
-
-output_T_8 = ParametricSoftplus(alpha=0.2, beta=5)(output_T_8)
-output_F_8 = ParametricSoftplus(alpha=0.2, beta=5)(output_F_8)
+output_T_8 = Conv1D(filters=128, kernel_size = 9, activation='relu')(output_T_7)
+output_F_8 = Conv1D(filters=128, kernel_size = 9, activation='relu')(output_F_7)
 
 output_T_9 = MaxPooling1D(pool_size=9, strides=4, padding='valid')(output_T_8)
 output_F_9 = MaxPooling1D(pool_size=9, strides=4, padding='valid')(output_F_8)
-rst
+
 output_T = Flatten()(output_T_9)
 output_F = Flatten()(output_F_9)
 
 input_dense_part = merge([output_T, output_F], mode='concat')
 
-output_dense_1 = Dense(4096)(input_dense_part)
-
-output_dense_1 = ParametricSoftplus(alpha=0.2, beta=5)(output_dense_1)
+output_dense_1 = Dense(4096, activation='relu')(input_dense_part)
 
 output_dense_2 = Dropout(0.5)(output_dense_1)
 
-output_dense_3 = Dense(4096)(output_dense_2)
-
-output_dense_3 = ParametricSoftplus(alpha=0.2, beta=5)(output_dense_3)
+output_dense_3 = Dense(4096, activation='relu')(output_dense_2)
 
 output_dense_4 = Dropout(0.5)(output_dense_3)
 
@@ -232,7 +204,7 @@ model = Model([Input_T, Input_F], output)
 
 model.compile(optimizer=ADAM, loss='binary_crossentropy', metrics=['accuracy'])
 
-print(model.summary())
+
 
 
 
@@ -240,19 +212,19 @@ print(model.summary())
 class MonitorAUC_train(Callback):
     def on_epoch_end(self, epoch, logs={}):
         yhat = self.model.predict([X_test96K, X_test96K_F], verbose=0)
-        print yhat[0:10], ' AUC :', roc_auc_score(Y_test, yhat)
+        print ' AUC :', roc_auc_score(Y_test, yhat)
 
 callbacks = [
    	MonitorAUC_train(),
 	EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='auto'),
-	ModelCheckpoint('weights/weight_TF_psp_working.hdf5', monitor='val_loss', verbose=0, save_best_only='true', save_weights_only='true', mode='auto', period=1)
+	ModelCheckpoint('weights/weight_tf_seed3.hdf5', monitor='val_loss', verbose=0, save_best_only='true', save_weights_only='true', mode='auto', period=1)
 ]
 
 
 # 625
 model.fit_generator(generator,validation_data=([X_test96K, X_test96K_F], Y_test), callbacks=callbacks, verbose = 1, epochs=200, max_queue_size=100, workers=1, steps_per_epoch=200, use_multiprocessing='false')
 
-model.save('models/model_TF_psp_working.h5')
+model.save('models/model_tf_seed3.hdf5.h5')
 
 
 

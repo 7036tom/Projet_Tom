@@ -9,7 +9,7 @@
 
 #wget http://mi.soi.city.ac.uk/datasets/magnatagatune/annotations_final.csv
 
-#cd ../
+cd ../
 
 python Create_Magnatagatune_dataset.py
 python Load_databasewhole_test.py

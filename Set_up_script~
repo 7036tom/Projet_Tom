@@ -1,0 +1,8 @@
+mkdir models
+mkdir weights
+
+### Handle the magnatagatune dataset ###
+./Create_magnatagatune_dataset
+
+### Handle the studyforest dataset ###
+./Create_studyforest_dataset

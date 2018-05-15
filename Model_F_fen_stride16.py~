@@ -35,7 +35,7 @@ Random = np.zeros(nbr_random).astype(int)
 for i in range(nbr_random):
 	Random[i]=int(random.random()*(465983-96001))
 
-dataframe_labels = pd.read_csv("databases/labels_Mtatune.csv", header=None)
+dataframe_labels = pd.read_csv("databases/labels.csv", header=None)
 dataset_labels = dataframe_labels.values
 
 # Definition of test data

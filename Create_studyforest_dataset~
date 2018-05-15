@@ -8,4 +8,5 @@ cd ../../../../../../
 rm -r psydata.ovgu.de
 
 cd ../
-python Create_studyforest_dataset.py
+python Create_Magnatagatune_dataset.py
+python Create_Studyforest_dataset.py
