@@ -2,6 +2,7 @@ mkdir models
 mkdir weights
 mkdir databases
 mkdir DSMs
+mkdir DSMs_png
 
 ### Handle the magnatagatune dataset ###
 ./Create_magnatagatune_dataset
