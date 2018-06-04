@@ -6,7 +6,6 @@ import csv
 import numpy as np
 import pandas as pd
 import math
-import librosa
 import threading
 from keras.models import load_model
 
@@ -16,8 +15,6 @@ from keras.models import Sequential, Model
 from keras.layers import UpSampling1D, Dense, Reshape, Activation, Dropout,Layer, Conv1D, GlobalMaxPooling1D, Flatten, MaxPooling1D, MaxPooling2D, Merge, Input, merge, Conv1D, BatchNormalization, PReLU
 from keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, LearningRateScheduler, ReduceLROnPlateau, LearningRateScheduler
 from keras.layers.normalization import BatchNormalization
-from keras import backend as K
-from theano import tensor as T
 from sklearn.metrics import roc_auc_score, roc_curve
 
 from skbio.stats.distance import DissimilarityMatrix

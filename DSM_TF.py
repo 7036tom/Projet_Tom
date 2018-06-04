@@ -20,7 +20,7 @@ plt.switch_backend('agg')
 
 sns.set()
 
-model = load_model('models/model_tf_seed_1.h5') # Here enter the path to your model file
+model = load_model('models/model_tf_seed3.hdf5.h5') # Here enter the path to your model file
 
 print(model.summary())
 
