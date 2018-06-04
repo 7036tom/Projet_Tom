@@ -205,12 +205,12 @@ X_test96K = np.expand_dims(X_test96K, axis=2) # This one is for use in AUC_callb
 
 callbacks = [
 	EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0, mode='auto'),
-	ModelCheckpoint('weights/weight_autoenc_5L_64.hdf5', monitor='val_loss', verbose=0, save_best_only='true', save_weights_only='true', mode='auto', period=1)
+	ModelCheckpoint('weights/weight_autoenc_5L_128.hdf5', monitor='val_loss', verbose=0, save_best_only='true', save_weights_only='true', mode='auto', period=1)
 ]
 
 Autoencodeur.fit_generator(generator,validation_data=(X_test96K, X_test96K), callbacks=callbacks, verbose = 1, epochs=200, max_queue_size=100, workers=1, steps_per_epoch=400, use_multiprocessing='false')
 
-Autoencodeur.save('models/Auto_encoder_5L_64_true.h5')
+Autoencodeur.save('models/Auto_encoder_5L_128.h5')
 
 pred = Autoencodeur.predict(X_test96K)
 
