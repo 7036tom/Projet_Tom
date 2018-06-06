@@ -133,7 +133,7 @@ ADAM = Adam(lr=0.0002, beta_1=0.5, beta_2=0.999, epsilon=1e-8) # Parameters from
 
 # Parameters from Guclu paper
 
-Input_T = Input(shape = (96000,1))
+Input_T = Input(shape = (96000,1)) #96000 = 16000 (freq) *6 (secondes)
 Input_F = Input(shape = (96000,1))
 
 output_T_1 = BatchNormalization(input_shape = (96000,1))(Input_T)
