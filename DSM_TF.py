@@ -14,6 +14,7 @@ from keras.layers.normalization import BatchNormalization
 from scipy.stats import spearmanr, pearsonr
 from scipy.stats.mstats import spearmanr as spearmanr_bis
 import seaborn as sns
+import librosa
 
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
@@ -184,7 +185,7 @@ np.savetxt("DSMs/L1_TF.csv", dsm1, delimiter=",") # Save the DSM of layer i so t
 
 ax_bis = sns.heatmap(dsm1, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99)) # Custom color palette, close to guclu's one
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L1.png") 
+fig.savefig("DSMs_png/L1_TF.png") 
 
 
 # DSM C2 ########################################################################################################################################################################"
@@ -254,7 +255,7 @@ DSM = DissimilarityMatrix(dsm) # Conversion from symilarity to dissymilarity
 #ax = sns.heatmap(dsm_5x5_2, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 ax_bis = sns.heatmap(dsm2, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L2.png")
+fig.savefig("DSMs_png/L2_TF.png")
 
 
 
@@ -332,7 +333,7 @@ DSM = DissimilarityMatrix(dsm) # Conversion from symilarity to dissymilarity
 
 ax_bis = sns.heatmap(dsm3, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L3.png")
+fig.savefig("DSMs_png/L3_TF.png")
 
 # DSM C4 #############################################################################################################################################
 
@@ -407,7 +408,7 @@ DSM = DissimilarityMatrix(dsm) # Conversion from symilarity to dissymilarity
 #ax = sns.heatmap(dsm_5x5_4, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 ax_bis = sns.heatmap(dsm4, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L4.png")
+fig.savefig("DSMs_png/L4_TF.png")
 
 # DSM C5 #############################################################################################################################################
 
@@ -482,7 +483,7 @@ DSM = DissimilarityMatrix(dsm) # Conversion from symilarity to dissymilarity
 #ax = sns.heatmap(dsm_5x5_5, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 ax_bis = sns.heatmap(dsm5, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L5.png")
+fig.savefig("DSMs_png/L5_TF.png")
 
 # DSM C6 #############################################################################################################################################
 
@@ -557,7 +558,7 @@ DSM = DissimilarityMatrix(dsm) # Conversion from symilarity to dissymilarity
 #ax = sns.heatmap(dsm_5x5_6, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 ax_bis = sns.heatmap(dsm6, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L6.png")
+fig.savefig("DSMs_png/L6_TF.png")
 
 # DSM C7 #############################################################################################################################################
 
@@ -632,7 +633,7 @@ DSM = DissimilarityMatrix(dsm) # Conversion from symilarity to dissymilarity
 #ax = sns.heatmap(dsm_5x5_7, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 ax_bis = sns.heatmap(dsm7, cmap=sns.diverging_palette(260, 10, sep=1, n=300, l=30, s=99.99))
 fig = ax_bis.get_figure()
-fig.savefig("DSMs_png/L7.png")
+fig.savefig("DSMs_png/L7_TF.png")
 
 
 # MODEL DSM (ie dsm of dsms!)

@@ -15,12 +15,9 @@ from keras.models import Sequential, Model
 from keras.layers import UpSampling1D, Dense, Reshape, Activation, Dropout,Layer, Conv1D, GlobalMaxPooling1D, Flatten, MaxPooling1D, MaxPooling2D, Merge, Input, merge, Conv1D, BatchNormalization, PReLU
 from keras.callbacks import Callback, EarlyStopping, ModelCheckpoint, LearningRateScheduler, ReduceLROnPlateau, LearningRateScheduler
 from keras.layers.normalization import BatchNormalization
-from sklearn.metrics import roc_auc_score, roc_curve
-
-from skbio.stats.distance import DissimilarityMatrix
-
 from scipy.stats import spearmanr
 
+import librosa
 import seaborn as sns
 import matplotlib.pyplot as plt
 plt.switch_backend('agg')
@@ -363,7 +360,8 @@ for i in range(5):
 #	dsm[i,i]=0
 
 #np.savetxt("dsm_layers/Layer_7_TF_5X5.csv", dsm_5x5, delimiter=",")
-np.savetxt("L3_AE.csv", dsm3, delimiter=",")
+np.savetxt("DSMs/L3_AE.csv", dsm3, delimiter=",")
+
 
 # Using a random norm
 """
@@ -439,7 +437,7 @@ for i in range(5):
 #	dsm[i,i]=0
 
 #np.savetxt("dsm_layers/Layer_7_TF_5X5.csv", dsm_5x5, delimiter=",")
-np.savetxt("L4_AE.csv", dsm4, delimiter=",")
+np.savetxt("DSMs/L4_AE.csv", dsm4, delimiter=",")
 
 # Using a random norm
 """
@@ -514,7 +512,7 @@ for i in range(5):
 #	dsm[i,i]=0
 
 #np.savetxt("dsm_layers/Layer_7_TF_5X5.csv", dsm_5x5, delimiter=",")
-np.savetxt("L5_AE.csv", dsm5, delimiter=",")
+np.savetxt("DSMs/L5_AE.csv", dsm5, delimiter=",")
 
 # Using a random norm
 """
